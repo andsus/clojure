@@ -1,12 +1,13 @@
 (ns anagram
   (:require [clojure.string :as string]))
 
-(defn anagrams? [alpha beta]
-  (let [ a (string/lower-case alpha) 
-         b (string/lower-case beta)] 
-         (and
-          (not (= a b))
-          (= (sort a) (sort b)))))
+(defn- anagrams-of? [word]
+  (let [word (string/lower-case word)
+        sorted-word (sort word)]
+      #(let [s (string/lower-case %)]  
+        (and
+          (not= s word)
+          (= (sort s) sorted-word)))))
 
 (defn anagrams-for [word prospects]  
-  (filter #(anagrams? word %) prospects))
+  (filter (anagrams-of? word) prospects))
